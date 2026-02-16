@@ -7,6 +7,8 @@ description: >
 
 version: 0.0.1
 homepage: https://github.com/abimbola-michael/easy_dio_client
+repository: https://github.com/abimbola-michael/easy_dio_client
+issue_tracker: https://github.com/abimbola-michael/easy_dio_client/issues
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
