@@ -1,0 +1,28 @@
+name: easy_dio_client
+description: >
+  A simple and opinionated Dio-based HTTP client for Flutter with
+  built-in authentication session handling, token refresh support,
+  unified API responses, file upload/download helpers, and model
+  conversion using generics.
+
+version: 0.0.1
+homepage: https://github.com/abimbola-michael/easy_dio_client
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  dio: ^5.4.0
+  flutter_secure_storage: ^9.0.0
+  http_parser: ^4.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
