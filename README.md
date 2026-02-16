@@ -130,18 +130,6 @@ final response = await DioClient().post<Map<String, dynamic>>(
     "password": "123456",
   },
 );
-
-if (response.success) {
-  AuthSessionManager.init(
-    response.fullData,
-    refreshTokenEndpoint: "/auth/refresh",
-    refreshTokenEndpointKey: "refresh_token",
-    accessTokenKey: "access_token",
-    refreshTokenKey: "refresh_token",
-    accessTokenExpiryKey: "access_token_expiry",
-    refreshTokenExpiryKey: "refresh_token_expiry",
-  );
-}
 ```
 
 ---
