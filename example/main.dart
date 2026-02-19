@@ -9,9 +9,11 @@ void main() async {
   DioClient.init(
     baseUrl: "https://reqres.in/api",
     refreshTokenEndpoint: "/refresh",
-    refreshTokenEndpointKey: "refresh_token",
+    refreshTokenEndpointKey: "auth/refresh_token",
+    tokenEndpoints: ["auth/signin"],
     accessTokenKey: "access_token",
     refreshTokenKey: "refresh_token",
+    otherSecureStorageKeys: ["user"],
     onAuthFailure: () {
       debugPrint("Auth failed");
     },

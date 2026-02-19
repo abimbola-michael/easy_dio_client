@@ -33,9 +33,9 @@ class DioClient {
   static Duration _connectionTimeout = Duration(milliseconds: 60000);
 
   static ResponseType _responseType = ResponseType.json;
-
   static String _refreshTokenEndpoint = "";
   static String _refreshTokenEndpointKey = "refresh_token";
+  static List<String>? _tokenEndpoints;
 
   static String _accessTokenKey = "access_token";
   static String _refreshTokenKey = "refresh_token";
@@ -78,6 +78,7 @@ class DioClient {
   static void init({
     required String baseUrl,
     required String refreshTokenEndpoint,
+    List<String>? tokenEndpoints,
     Duration receiveTimeout = const Duration(milliseconds: 60000),
     Duration connectionTimeout = const Duration(milliseconds: 60000),
     ResponseType responseType = ResponseType.json,
@@ -112,6 +113,7 @@ class DioClient {
     _baseUrl = baseUrl;
     _receiveTimeout = receiveTimeout;
     _connectionTimeout = connectionTimeout;
+    _tokenEndpoints = tokenEndpoints;
     _refreshTokenEndpoint = refreshTokenEndpoint;
     _refreshTokenEndpointKey = refreshTokenEndpointKey;
     _accessTokenKey = accessTokenKey;
@@ -141,6 +143,27 @@ class DioClient {
     _onGetDioException = onGetDioException;
     _responseType = responseType;
     _interceptors = interceptors;
+  }
+
+  static Future<String?> getAccessTokenValue() async {
+    final token = await SecureStorage.get(accessTokenKey);
+    return token as String?;
+  }
+
+  static Future<String?> getRefreshTokenValue() async {
+    final token = await SecureStorage.get(refreshTokenKey);
+    return token as String?;
+  }
+
+  static Future<String?> getBiometricTokenValue() async {
+    if (biometricsTokenKey == null) return null;
+    final token = await SecureStorage.get(biometricsTokenKey!);
+    return token as String?;
+  }
+
+  static Future<Object?> getSecureStorageValue(String key) async {
+    final token = await SecureStorage.get(key);
+    return token;
   }
 
   static Future<bool> isLoggedIn() async {
@@ -183,8 +206,7 @@ class DioClient {
 
         _onAuthFailure?.call();
       } else {
-        final isNetwork =
-            e.type == DioExceptionType.connectionError ||
+        final isNetwork = e.type == DioExceptionType.connectionError ||
             e.type == DioExceptionType.receiveTimeout ||
             e.type == DioExceptionType.sendTimeout;
 
@@ -334,8 +356,7 @@ class DioClient {
 
       currentRequests.remove(url);
 
-      final pagination =
-          response.data != null &&
+      final pagination = response.data != null &&
               response.data is Map<String, dynamic> &&
               _paginationKeys.isNotEmpty
           ? (response.data as Map<String, dynamic>).findValuesByKey(
@@ -343,7 +364,8 @@ class DioClient {
             )
           : null;
 
-      if (response.data != null) {
+      if (response.data != null &&
+          (_tokenEndpoints == null || _tokenEndpoints!.contains(url))) {
         AuthSessionManager.init(
           response.data,
           refreshTokenEndpoint: _refreshTokenEndpoint,
@@ -360,8 +382,7 @@ class DioClient {
           isMillisecsExpiry: _isMillisecsExpiry,
         );
       }
-      var responseData =
-          response.data != null &&
+      var responseData = response.data != null &&
               response.data is Map<String, dynamic> &&
               _dataKeys.isNotEmpty
           ? (response.data as Map<String, dynamic>).findValuesByKey(_dataKeys)
@@ -381,8 +402,7 @@ class DioClient {
         }
       }
 
-      final message =
-          response.data != null &&
+      final message = response.data != null &&
               response.data is Map<String, dynamic> &&
               _messageKeys.isNotEmpty
           ? (response.data as Map<String, dynamic>).findValuesByKey(
@@ -390,15 +410,13 @@ class DioClient {
             )
           : null;
 
-      final error =
-          response.data != null &&
+      final error = response.data != null &&
               response.data is Map<String, dynamic> &&
               _errorKeys.isNotEmpty
           ? (response.data as Map<String, dynamic>).findValuesByKey(_errorKeys)
           : null;
 
-      final success =
-          response.data != null &&
+      final success = response.data != null &&
               response.data is Map<String, dynamic> &&
               _successBooleanKeys.isNotEmpty
           ? (response.data as Map<String, dynamic>).findValuesByKey(
@@ -417,34 +435,32 @@ class DioClient {
         data: responseData != null && responseData is List
             ? null
             : convert != null
-            ? convert(responseData)
-            : responseData as T,
+                ? convert(responseData)
+                : responseData as T,
         datas: responseData != null && responseData is List
             ? convert != null
-                  ? responseData.map((snapshot) => convert(data)!).toList()
-                  : responseData as List<T>
+                ? responseData.map((snapshot) => convert(data)!).toList()
+                : responseData as List<T>
             : null,
         message: message == null
             ? null
             : message is String
-            ? message
-            : message is List<dynamic>
-            ? message.join("\n")
-            : message.toString(),
-
+                ? message
+                : message is List<dynamic>
+                    ? message.join("\n")
+                    : message.toString(),
         error: error == null
             ? null
             : error is String
-            ? error
-            : error is List<dynamic>
-            ? error.join("\n")
-            : error.toString(),
-
+                ? error
+                : error is List<dynamic>
+                    ? error.join("\n")
+                    : error.toString(),
         statusCode: response.statusCode,
         pagination: pagination != null
             ? _onGetPagination != null
-                  ? _onGetPagination!(pagination)
-                  : Pagination.fromMap(pagination)
+                ? _onGetPagination!(pagination)
+                : Pagination.fromMap(pagination)
             : null,
         fullData: response.data,
       );
@@ -461,8 +477,7 @@ class DioClient {
 
       if (response?.data != null) {
         if (response?.data is Map<String, dynamic>) {
-          final message =
-              response!.data != null &&
+          final message = response!.data != null &&
                   response.data is Map<String, dynamic> &&
                   _messageKeys.isNotEmpty
               ? (response.data as Map<String, dynamic>).findValuesByKey(
@@ -470,8 +485,7 @@ class DioClient {
                 )
               : null;
 
-          final error =
-              response.data != null &&
+          final error = response.data != null &&
                   response.data is Map<String, dynamic> &&
                   _errorKeys.isNotEmpty
               ? (response.data as Map<String, dynamic>).findValuesByKey(
@@ -484,20 +498,20 @@ class DioClient {
             message: message == null
                 ? null
                 : message is String
-                ? message
-                : message is List<dynamic>
-                ? message.join("\n")
-                : message.toString(),
+                    ? message
+                    : message is List<dynamic>
+                        ? message.join("\n")
+                        : message.toString(),
 
             // data:dataKey != null? response?.data[dataKey]:,
             data: response.data,
             error: error == null
                 ? null
                 : error is String
-                ? error
-                : error is List<dynamic>
-                ? error.join("\n")
-                : error.toString(),
+                    ? error
+                    : error is List<dynamic>
+                        ? error.join("\n")
+                        : error.toString(),
             statusCode: response.statusCode,
             fullData: response.data,
           );

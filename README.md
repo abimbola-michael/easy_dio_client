@@ -31,7 +31,7 @@ Built on top of `dio`.
 
 ```yaml
 dependencies:
-  easy_dio_client: ^0.0.1
+  easy_dio_client: ^0.0.2
 ```
 
 ---
@@ -48,8 +48,10 @@ void main() async {
     baseUrl: "https://api.example.com",
     refreshTokenEndpoint: "/auth/refresh",
     refreshTokenEndpointKey: "refresh_token",
+    tokenEndpoints: ["auth/signin"],
     accessTokenKey: "access_token",
     refreshTokenKey: "refresh_token",
+    otherSecureStorageKeys: ["user"],
     accessTokenExpiryKey: "access_token_expiry",
     refreshTokenExpiryKey: "refresh_token_expiry",
     onAuthFailure: () {
@@ -130,6 +132,15 @@ final response = await DioClient().post<Map<String, dynamic>>(
     "password": "123456",
   },
 );
+```
+
+## 🔐 Get Tokens Example
+
+```dart
+final accessToken = await DioClient.getAccessTokenValue();
+final refreshToken = await DioClient.getRefreshTokenValue();
+final biometricToken = await DioClient.getBiometricTokenValue();
+final otherSecureStorageValue = await DioClient.getSecureStorageValue("user");
 ```
 
 ---

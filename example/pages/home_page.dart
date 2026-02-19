@@ -15,6 +15,18 @@ class _HomePageState extends State<HomePage> {
   List<UserModel> users = [];
   String log = "";
 
+  Future<void> getTokens() async {
+    final accessToken = await DioClient.getAccessTokenValue();
+    final refreshToken = await DioClient.getRefreshTokenValue();
+    final biometricToken = await DioClient.getBiometricTokenValue();
+    final otherSecureStorageValue =
+        await DioClient.getSecureStorageValue("user");
+    setState(() {
+      log =
+          "Access Token: $accessToken\nRefresh Token: $refreshToken\nBiometric Token: $biometricToken\nOther Secure Storage Value: $otherSecureStorageValue";
+    });
+  }
+
   /// GET + convert
   Future<void> fetchUsers() async {
     final response = await DioClient().get<UserModel>(
