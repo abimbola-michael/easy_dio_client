@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.0.4
+
+- Added MIT license file for OSI compliance
+- Shortened pubspec description to meet pub.dev requirements
+- Improved package documentation and API comments
+- Fixed CHANGELOG formatting to reference current version
+- Updated dependencies to latest compatible versions
+- Minor internal improvements and cleanup
+
 ## 0.0.3
 
 - Renamed `onGetPagination` to `onExtractPagination`
