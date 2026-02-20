@@ -68,7 +68,8 @@ class DioClient {
   static List<String> _errorKeys = [];
   static List<String> _messageKeys = [];
   static List<String> _successBooleanKeys = [];
-  static Pagination Function(Map<String, dynamic> pagination)? _onGetPagination;
+  static Pagination Function(Map<String, dynamic> pagination)?
+      _onExtractPagination;
   static Future Function(Map<String, dynamic> headers)? _onModifyHeader;
   static Interceptors? _interceptors;
   Set<String> currentRequests = {};
@@ -99,7 +100,7 @@ class DioClient {
     List<String> errorKeys = const ["error"],
     List<String> messageKeys = const ["message"],
     List<String> successBooleanKeys = const ["success"],
-    Pagination Function(Map<String, dynamic> pagination)? onGetPagination,
+    Pagination Function(Map<String, dynamic> pagination)? onExtractPagination,
     Future Function(Map<String, dynamic> headers)? onModifyHeader,
     void Function()? onAuthFailure,
     void Function(Request request)? onGetRequest,
@@ -132,7 +133,7 @@ class DioClient {
     _errorKeys = errorKeys;
     _messageKeys = messageKeys;
     _successBooleanKeys = successBooleanKeys;
-    _onGetPagination = onGetPagination;
+    _onExtractPagination = onExtractPagination;
     _onModifyHeader = onModifyHeader;
     _onAuthFailure = onAuthFailure;
     _onGetRequest = onGetRequest;
@@ -458,8 +459,8 @@ class DioClient {
                     : error.toString(),
         statusCode: response.statusCode,
         pagination: pagination != null
-            ? _onGetPagination != null
-                ? _onGetPagination!(pagination)
+            ? _onExtractPagination != null
+                ? _onExtractPagination!(pagination)
                 : Pagination.fromMap(pagination)
             : null,
         fullData: response.data,
@@ -753,8 +754,8 @@ class DioClient {
 
   // Upload File
   Future<ApiResponse<T>> downloadFile<T>(
-    String savePath,
     String url, {
+    required String savePath,
     String fileKey = "file",
     String? fileName,
     dynamic data,

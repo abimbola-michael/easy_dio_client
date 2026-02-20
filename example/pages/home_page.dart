@@ -76,6 +76,11 @@ class _HomePageState extends State<HomePage> {
     final res = await DioClient().uploadFile(
       "/upload",
       filePath: "/storage/emulated/0/Download/test.png",
+      //filePaths: ["/storage/emulated/0/Download/test.png", "/storage/emulated/0/Download/test2.png"],
+      //bytes: ...,
+      //multiBytes: ....,
+      fileKey: "file",
+      fileName: "test.png",
     );
     setState(() => log = "UPLOAD: ${res.fullData}");
   }
@@ -83,8 +88,8 @@ class _HomePageState extends State<HomePage> {
   /// Download file
   Future<void> downloadFile() async {
     final res = await DioClient().downloadFile(
-      "/storage/emulated/0/Download/file.pdf",
       "/files/1",
+      savePath: "/storage/emulated/0/Download/file.pdf",
     );
     setState(() => log = "DOWNLOAD: ${res.success}");
   }

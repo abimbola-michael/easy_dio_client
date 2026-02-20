@@ -5,7 +5,7 @@ description: >
   unified API responses, file upload/download helpers, and model
   conversion using generics.
 
-version: 0.0.2
+version: 0.0.3
 homepage: https://github.com/abimbola-michael/easy_dio_client
 repository: https://github.com/abimbola-michael/easy_dio_client
 issue_tracker: https://github.com/abimbola-michael/easy_dio_client/issues
