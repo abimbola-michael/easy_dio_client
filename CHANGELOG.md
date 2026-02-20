@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.5
+
+- Corrected `DioClient.init` parameters values
+
 ## 0.0.4
 
 - Added MIT license file for OSI compliance

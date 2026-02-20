@@ -1,7 +1,7 @@
 name: easy_dio_client
 description: A lightweight Dio-based HTTP client for Flutter with authentication, token refresh, file upload/download, and generic model conversion support.
 
-version: 0.0.3
+version: 0.0.5
 homepage: https://github.com/abimbola-michael/easy_dio_client
 repository: https://github.com/abimbola-michael/easy_dio_client
 issue_tracker: https://github.com/abimbola-michael/easy_dio_client/issues

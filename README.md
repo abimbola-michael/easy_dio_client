@@ -45,9 +45,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   DioClient.init(
-    baseUrl: "https://reqres.in/api",
-    refreshTokenEndpoint: "/refresh",
-    refreshTokenEndpointKey: "auth/refresh_token",
+    baseUrl: "https://reqres.in/api/",
+    refreshTokenEndpoint: "auth/refresh",
+    refreshTokenEndpointKey: "refresh_token",
     tokenEndpoints: ["auth/signin"],
     accessTokenKey: "access_token",
     refreshTokenKey: "refresh_token",
