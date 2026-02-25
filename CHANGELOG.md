@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.6
+
+- Fixed skipped issue when theres an error
+
 ## 0.0.5
 
 - Corrected `DioClient.init` parameters values
