@@ -355,8 +355,6 @@ class DioClient {
       _onGetResponse?.call(response);
       _onGetSuccessResponse?.call(response);
 
-      currentRequests.remove(url);
-
       final pagination = response.data != null &&
               response.data is Map<String, dynamic> &&
               _paginationKeys.isNotEmpty
@@ -540,6 +538,8 @@ class DioClient {
     } on Exception catch (e) {
       _onGetException?.call(e);
       return ApiResponse<T>(success: false, message: e.toString(), data: null);
+    } finally {
+      currentRequests.remove(url);
     }
   }
 
