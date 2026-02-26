@@ -242,20 +242,21 @@ class DioClient {
 
   // Helper method to merge options
   Options _mergeOptions(Options? options, String method) {
-    final baseOptions = Options(method: method, headers: {}, extra: {});
+    return options?.copyWith(method: method) ?? Options(method: method);
+    // final baseOptions = Options(method: method, headers: {}, extra: {});
 
-    if (options != null) {
-      baseOptions.headers?.addAll(options.headers ?? {});
-      baseOptions.extra?.addAll(options.extra ?? {});
-      // Copy other relevant options properties
-      baseOptions.responseType = options.responseType;
-      baseOptions.contentType = options.contentType;
-      baseOptions.validateStatus = options.validateStatus;
-      baseOptions.receiveTimeout = options.receiveTimeout;
-      baseOptions.sendTimeout = options.sendTimeout;
-    }
+    // if (options != null) {
+    //   baseOptions.headers?.addAll(options.headers ?? {});
+    //   baseOptions.extra?.addAll(options.extra ?? {});
+    //   // Copy other relevant options properties
+    //   baseOptions.responseType = options.responseType;
+    //   baseOptions.contentType = options.contentType;
+    //   baseOptions.validateStatus = options.validateStatus;
+    //   baseOptions.receiveTimeout = options.receiveTimeout;
+    //   baseOptions.sendTimeout = options.sendTimeout;
+    // }
 
-    return baseOptions;
+    // return baseOptions;
   }
 
   // Generic Request Sender
@@ -271,6 +272,7 @@ class DioClient {
     ProgressCallback? onReceiveProgress,
     String? dataKey,
     T? Function(Map<String, dynamic>)? convert,
+    bool useBaseOptions = true,
   }) async {
     try {
       // Determine content type based on data type
@@ -332,9 +334,9 @@ class DioClient {
         cancelToken: cancelToken,
       );
       _onGetRequest?.call(request);
-
+      final dio = useBaseOptions ? _dio : Dio();
       final response = savePath != null
-          ? await _dio.download(
+          ? await dio.download(
               url,
               savePath,
               data: data,
@@ -343,7 +345,7 @@ class DioClient {
               cancelToken: cancelToken,
               onReceiveProgress: onReceiveProgress,
             )
-          : await _dio.request(
+          : await dio.request(
               url,
               data: data,
               queryParameters: queryParameters,
@@ -553,6 +555,7 @@ class DioClient {
     ProgressCallback? onReceiveProgress,
     String? dataKey,
     T? Function(Map<String, dynamic> data)? convert,
+    bool useBaseOptions = true,
   }) async {
     return _sendRequest(
       url,
@@ -564,6 +567,7 @@ class DioClient {
       onReceiveProgress: onReceiveProgress,
       dataKey: dataKey,
       convert: convert,
+      useBaseOptions: useBaseOptions,
     );
   }
 
@@ -578,6 +582,7 @@ class DioClient {
     ProgressCallback? onReceiveProgress,
     String? dataKey,
     T? Function(Map<String, dynamic> data)? convert,
+    bool useBaseOptions = true,
   }) async {
     return _sendRequest(
       url,
@@ -590,6 +595,7 @@ class DioClient {
       onReceiveProgress: onReceiveProgress,
       dataKey: dataKey,
       convert: convert,
+      useBaseOptions: useBaseOptions,
     );
   }
 
@@ -604,6 +610,7 @@ class DioClient {
     ProgressCallback? onReceiveProgress,
     String? dataKey,
     T? Function(Map<String, dynamic> data)? convert,
+    bool useBaseOptions = true,
   }) async {
     return _sendRequest(
       url,
@@ -616,6 +623,7 @@ class DioClient {
       onReceiveProgress: onReceiveProgress,
       dataKey: dataKey,
       convert: convert,
+      useBaseOptions: useBaseOptions,
     );
   }
 
@@ -630,6 +638,7 @@ class DioClient {
     ProgressCallback? onReceiveProgress,
     String? dataKey,
     T? Function(Map<String, dynamic> data)? convert,
+    bool useBaseOptions = true,
   }) async {
     return _sendRequest(
       url,
@@ -642,6 +651,7 @@ class DioClient {
       onReceiveProgress: onReceiveProgress,
       dataKey: dataKey,
       convert: convert,
+      useBaseOptions: useBaseOptions,
     );
   }
 
@@ -654,6 +664,7 @@ class DioClient {
     CancelToken? cancelToken,
     String? dataKey,
     T? Function(Map<String, dynamic> data)? convert,
+    bool useBaseOptions = true,
   }) async {
     return _sendRequest(
       url,
@@ -664,6 +675,7 @@ class DioClient {
       cancelToken: cancelToken,
       dataKey: dataKey,
       convert: convert,
+      useBaseOptions: useBaseOptions,
     );
   }
 
@@ -685,6 +697,7 @@ class DioClient {
     ProgressCallback? onReceiveProgress,
     String? dataKey,
     T? Function(Map<String, dynamic> data)? convert,
+    bool useBaseOptions = true,
   }) async {
     FormData? formData;
     if (filePaths != null) {
@@ -749,6 +762,7 @@ class DioClient {
       onReceiveProgress: onReceiveProgress,
       dataKey: dataKey,
       convert: convert,
+      useBaseOptions: useBaseOptions,
     );
   }
 
@@ -765,6 +779,7 @@ class DioClient {
     ProgressCallback? onReceiveProgress,
     String? dataKey,
     T? Function(Map<String, dynamic> data)? convert,
+    bool useBaseOptions = true,
   }) async {
     return _sendRequest(
       url,
@@ -777,6 +792,7 @@ class DioClient {
       onReceiveProgress: onReceiveProgress,
       dataKey: dataKey,
       convert: convert,
+      useBaseOptions: useBaseOptions,
     );
   }
 }

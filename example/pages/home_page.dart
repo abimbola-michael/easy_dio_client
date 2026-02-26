@@ -49,6 +49,7 @@ class _HomePageState extends State<HomePage> {
     final res = await DioClient().post(
       "/users",
       data: {"name": "John", "job": "Developer"},
+      useBaseOptions: false,
     );
     setState(() => log = "POST: ${res.fullData}");
   }

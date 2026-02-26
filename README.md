@@ -226,7 +226,7 @@ final users = response.datas;
 ### POST
 
 ```dart
-await DioClient().post("/users", data: {"name": "John"});
+await DioClient().post("/users", data: {"name": "John"}, useBaseOptions: false);
 ```
 
 ### PUT

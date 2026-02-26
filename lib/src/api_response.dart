@@ -58,8 +58,8 @@ class ApiResponse<T> {
       data: convert == null || data == null
           ? null
           : data is List
-          ? null
-          : convert(data),
+              ? null
+              : convert(data),
       datas: convert == null || datas == null
           ? null
           : datas?.map((data) => convert(data)).toList(),
@@ -72,6 +72,11 @@ class ApiResponse<T> {
       skipped: skipped,
       dataChangeTypes: dataChangeTypes,
     );
+  }
+
+  @override
+  String toString() {
+    return 'ApiResponse(success: $success, skipped: $skipped, message: $message, error: $error, statusCode: $statusCode, fullData: $fullData, data: $data, datas: $datas, pagination: $pagination, dataChangeTypes: $dataChangeTypes)';
   }
 }
 
@@ -209,19 +214,19 @@ extension ApiResponseExtentions on ApiResponse {
       data: data == null
           ? null
           : convert == null
-          ? data as T
-          : data is List
-          ? null
-          : data is Map<String, dynamic>
-          ? convert(data)
-          : null,
+              ? data as T
+              : data is List
+                  ? null
+                  : data is Map<String, dynamic>
+                      ? convert(data)
+                      : null,
       datas: datas == null
           ? null
           : convert == null
-          ? datas as List<T>
-          : datas?.firstOrNull is! Map<String, dynamic>
-          ? null
-          : datas?.map((data) => convert(data)).toList(),
+              ? datas as List<T>
+              : datas?.firstOrNull is! Map<String, dynamic>
+                  ? null
+                  : datas?.map((data) => convert(data)).toList(),
       success: success,
       message: message,
       error: error,

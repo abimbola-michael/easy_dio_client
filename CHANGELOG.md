@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.7
+
+- Added `toString()` method to `ApiResponse` class
+- Added `useBaseOptions` parameter to `request` methods
+- Allowing custom options to be passed to the request
+
 ## 0.0.6
 
 - Fixed skipped issue when theres an error
