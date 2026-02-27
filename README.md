@@ -31,7 +31,7 @@ Built on top of `dio`.
 
 ```yaml
 dependencies:
-  easy_dio_client: ^0.0.2
+  easy_dio_client: ^0.0.8
 ```
 
 ---
